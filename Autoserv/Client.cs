@@ -11,7 +11,8 @@ namespace Autoserv
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Linq;
+
     public partial class Client
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,7 +21,7 @@ namespace Autoserv
             this.ClientService = new HashSet<ClientService>();
             this.TagOfClient = new HashSet<TagOfClient>();
         }
-    
+
         public int ID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -40,5 +41,15 @@ namespace Autoserv
         public virtual ICollection<ClientService> ClientService { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TagOfClient> TagOfClient { get; set; }
+    }
+
+    public partial class Client : IDbProvider<Client>
+    {
+        AutoServiceEntities db = new AutoServiceEntities();
+
+        public List<Client> GetData()
+        {
+            return db.Client.ToList();
+        }
     }
 }
